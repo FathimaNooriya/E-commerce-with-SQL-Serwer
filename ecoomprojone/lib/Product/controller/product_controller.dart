@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../home/controller/home_controller.dart';
 import '../model/product_model.dart';
 import '../service/product_service.dart';
@@ -14,6 +13,7 @@ class ProductController extends GetxController {
   TextEditingController searchController = TextEditingController();
   RxList<ProductModel> productList = <ProductModel>[].obs;
   RxList<ProductModel> searchResultList = <ProductModel>[].obs;
+
   RxBool loading = false.obs;
   RxBool productStatus = false.obs;
   RxBool productUpdating = false.obs;
@@ -104,6 +104,11 @@ class ProductController extends GetxController {
     getAllpdt();
     clear();
     homeController.pageIndex.value = 2;
+  }
+
+  void deleteProduct({required int productId}) async {
+    await ProductService().deleteProduct(productId: productId);
+    getAllpdt();
   }
 
 // //...................Searches for products matching the input value..................

@@ -27,6 +27,10 @@ class ProductScreen extends StatelessWidget {
                 child: IconButton(
                     onPressed: () {
                       homeController.pageIndex.value = 3;
+                      orderController.editOrderHistory.value
+                          ? orderController.netTotal.value = 0.0
+                          : null;
+                      orderController.editOrderHistory.value = false;
                     },
                     icon: const Icon(Icons.shopping_cart)),
               ),

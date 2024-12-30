@@ -1,3 +1,4 @@
+import 'package:ecoomprojone/home/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Core/fonts/font_styles.dart';
@@ -5,6 +6,7 @@ import '../../Core/widgets/listview_shimmer_widget.dart';
 import '../../Order/contoller/order_controller.dart';
 import '../../Product/controller/product_controller.dart';
 import '../../Product/model/product_model.dart';
+import '../../Product/view/widget/shimmer_widget.dart';
 import '../controller/customer_controller.dart';
 import 'widget/order_list_items.dart';
 
@@ -76,6 +78,8 @@ class OrderHistoryWidget extends StatelessWidget {
   final ProductController productController;
   final FontStyles font;
   final orderController = Get.put(OrderController());
+  final homeController = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -131,13 +135,29 @@ class OrderHistoryWidget extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ElevatedButton(
-                            onPressed: () {
-                              controller.editOrderFuction(
-                                  index: index,
-                                  orderController: orderController);
-                            },
-                            child: const Text("Edit")),
+                        Obx(() {
+                          return controller.loading.value
+                              ? const ShimmerWidget()
+                              : ElevatedButton(
+                                  onPressed: () async {
+                                   
+                                    controller.loading.value = true;
+
+                                    try {
+                                      await controller.editOrderFuction(
+                                          index: index,
+                                          orderController: orderController);
+                                     
+                                      orderController.editOrderHistory.value =
+                                          true;
+
+                                      homeController.pageIndex.value = 3;
+                                    } finally {
+                                      controller.loading.value = false;
+                                    }
+                                  },
+                                  child: const Text("Edit"));
+                        }),
                         Row(
                           children: [
                             const Text("Total"),

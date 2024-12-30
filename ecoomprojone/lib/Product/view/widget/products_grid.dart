@@ -31,42 +31,45 @@ class ProductsGrid extends StatelessWidget {
                 )
               : LayoutBuilder(
                   builder: (context, constraints) {
-                    return GridView.builder(
-                        itemCount: controller.productList.length,
-                        shrinkWrap: true,
-                        gridDelegate: constraints.maxWidth < 600
-                            ? const SliverGridDelegateWithMaxCrossAxisExtent(
-                                childAspectRatio: 4 / 5.8,
-                                maxCrossAxisExtent: 250,
-                                mainAxisExtent: 290,
-                                crossAxisSpacing: .5,
-                                mainAxisSpacing: .5)
-                            : constraints.maxWidth < 1024
-                                ? const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    childAspectRatio: 4 / 5.5,
-                                    maxCrossAxisExtent: 250,
-                                    mainAxisExtent: 270,
-                                    crossAxisSpacing: .5,
-                                    mainAxisSpacing: .5)
-                                : const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    childAspectRatio: 4 / 4.5,
-                                    maxCrossAxisExtent: 250,
-                                    mainAxisExtent: 270,
-                                    crossAxisSpacing: .5,
-                                    mainAxisSpacing: .5),
-                        itemBuilder: (context, index) {
-                          final data = controller.productList[index];
-                          return InkWell(
-                            onTap: () {
-                              controller.editProduct(product: data);
-                              homeController.pageIndex.value = 4;
-                            },
-                            child: ProductsCardWidget(
-                                data: data,
-                                font: font,
-                                orderController: orderController),
-                          );
-                        });
+                    return Obx(() {
+                      return GridView.builder(
+                          itemCount: controller.productList.length,
+                          shrinkWrap: true,
+                          gridDelegate: constraints.maxWidth < 600
+                              ? const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  childAspectRatio: 4 / 5.8,
+                                  maxCrossAxisExtent: 250,
+                                  mainAxisExtent: 290,
+                                  crossAxisSpacing: .5,
+                                  mainAxisSpacing: .5)
+                              : constraints.maxWidth < 1024
+                                  ? const SliverGridDelegateWithMaxCrossAxisExtent(
+                                      childAspectRatio: 4 / 5.5,
+                                      maxCrossAxisExtent: 250,
+                                      mainAxisExtent: 290,
+                                      crossAxisSpacing: .5,
+                                      mainAxisSpacing: .5)
+                                  : const SliverGridDelegateWithMaxCrossAxisExtent(
+                                      childAspectRatio: 4 / 4.5,
+                                      maxCrossAxisExtent: 250,
+                                      mainAxisExtent: 290,
+                                      crossAxisSpacing: .5,
+                                      mainAxisSpacing: .5),
+                          itemBuilder: (context, index) {
+                            final data = controller.productList[index];
+                            return InkWell(
+                              onTap: () {
+                                controller.editProduct(product: data);
+                                homeController.pageIndex.value = 4;
+                              },
+                              child: ProductsCardWidget(
+                                  homeController: homeController,
+                                  data: data,
+                                  font: font,
+                                  orderController: orderController),
+                            );
+                          });
+                    });
                   },
                 ),
     );

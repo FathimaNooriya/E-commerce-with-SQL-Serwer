@@ -36,7 +36,7 @@ class CustomerService {
       final responce = await http.get(Uri.parse(apiUrl));
 
       if (responce.statusCode == 200) {
-        List<dynamic> jsonData = jsonDecode(responce.body);
+        final jsonData = jsonDecode(responce.body);
 
         return CustomerModel.fromJsonModel(jsonData as Map<String, dynamic>);
       } else {

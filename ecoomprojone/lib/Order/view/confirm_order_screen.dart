@@ -47,43 +47,52 @@ class ConfirmOrderScreen extends StatelessWidget {
                           ? const EdgeInsets.symmetric(horizontal: 20)
                           : const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 20),
-                      child: controller.orderList.isEmpty
+                      child: controller.editOrderHistory.value &&
+                              controller.editOrderdProductList.isEmpty
                           ? const SizedBox()
-                          : Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                          : controller.editOrderHistory.value == false &&
+                                  controller.orderList.isEmpty
+                              ? const SizedBox()
+                              : Column(
                                   children: [
-                                    Text(
-                                      "Total",
-                                      style: constraints.maxWidth < 600
-                                          ? font.tittle3
-                                          : font.tittle2,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Total",
+                                          style: constraints.maxWidth < 600
+                                              ? font.tittle3
+                                              : font.tittle2,
+                                        ),
+                                        Obx(
+                                          () => Text(
+                                            controller.netTotal.value
+                                                .toString(),
+                                            style: constraints.maxWidth < 600
+                                                ? font.tittle2
+                                                : font.tittle1,
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                    Obx(
-                                      () => Text(
-                                        controller.netTotal.value.toString(),
-                                        style: constraints.maxWidth < 600
-                                            ? font.tittle2
-                                            : font.tittle1,
-                                      ),
-                                    )
+                                    ElevatedButton(
+                                        onPressed: () async {
+                                          controller.editOrderHistory.value
+                                              ? controller
+                                                  .conformEditOrderHistory()
+                                              : await controller.orderNow(
+                                                  orderedList:
+                                                      controller.orderList);
+
+                                          homeController.pageIndex.value = 2;
+                                        },
+                                        child: Text(
+                                          "Confirm Order",
+                                          style: font.tittle2,
+                                        ))
                                   ],
                                 ),
-                                ElevatedButton(
-                                    onPressed: () async {
-                                      await controller.orderNow(
-                                          orderedList: controller.orderList);
-
-                                      homeController.pageIndex.value = 2;
-                                    },
-                                    child: Text(
-                                      "Confirm Order",
-                                      style: font.tittle2,
-                                    ))
-                              ],
-                            ),
                     ),
                   ),
                 ],
@@ -109,13 +118,22 @@ class ConfirmOrderScreen extends StatelessWidget {
 
   List<DataRow> createRows() {
     final controller = Get.put(OrderController());
-    return controller.orderList
-        .map((order) => DataRow(cells: [
-              DataCell(Text(order.productName)),
-              DataCell(Text(order.productQty.toString())),
-              DataCell(Text(order.productPrice.toString())),
-              DataCell(Text(order.productTotal.toString()))
-            ]))
-        .toList();
+    return controller.editOrderHistory.value
+        ? controller.editOrderdProductList
+            .map((order) => DataRow(cells: [
+                  DataCell(Text(order.productName)),
+                  DataCell(Text(order.productQty.toString())),
+                  DataCell(Text(order.productPrice.toString())),
+                  DataCell(Text(order.productTotal.toString()))
+                ]))
+            .toList()
+        : controller.orderList
+            .map((order) => DataRow(cells: [
+                  DataCell(Text(order.productName)),
+                  DataCell(Text(order.productQty.toString())),
+                  DataCell(Text(order.productPrice.toString())),
+                  DataCell(Text(order.productTotal.toString()))
+                ]))
+            .toList();
   }
 }

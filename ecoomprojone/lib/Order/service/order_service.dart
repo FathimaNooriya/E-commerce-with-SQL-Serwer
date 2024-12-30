@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import '../model/edit_ordet_model.dart';
 import '../model/order_api_model.dart';
 
 class OrderService {
@@ -44,6 +45,30 @@ class OrderService {
     } catch (e) {
       Get.snackbar("Error", e.toString());
       return null;
+    }
+  }
+
+  Future<void> editCustomerHistory(
+      {required EditOrderRequest editOrderRequest}) async {
+
+    String apiUrl = "https://localhost:7039/api/Cust/EditCustOrdersHistory";
+
+    try {
+      final responce = await http.put(Uri.parse(apiUrl),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(editOrderRequest.toJson()));
+   
+      if (responce.statusCode == 201 || responce.statusCode == 200) {
+        Get.snackbar("Success", " Order updated");
+        return;
+      } else {
+        Get.snackbar("No data", "No orders found");
+
+        return;
+      }
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+      return;
     }
   }
 }

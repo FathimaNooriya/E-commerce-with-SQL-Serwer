@@ -1,3 +1,4 @@
+import 'package:ecoomprojone/Order/contoller/order_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +16,7 @@ class HomeController extends GetxController {
   //...................Instantiates controllers.................
   final custController = Get.put(CustomerController());
   final productController = Get.put(ProductController());
+  final orderController = Get.put(OrderController());
   RxInt pageIndex = 2.obs;
 
   //...................List of screens used for navigation in the application.................
@@ -22,7 +24,7 @@ class HomeController extends GetxController {
     const CustomerScreen(),
     const AddCustScreen(),
     const ProductScreen(),
-    const Orderscreen(),
+    const OrderScreen(),
     const AddProductScreen(),
     const OrderHistoryScreen(),
     const ConfirmOrderScreen(),
@@ -47,6 +49,11 @@ class HomeController extends GetxController {
     } else if (value == 4) {
       productController.clear();
       productController.productUpdating.value = false;
+    } else if (value == 3) {
+      orderController.editOrderHistory.value
+          ? orderController.netTotal.value = 0.0
+          : null;
+      orderController.editOrderHistory.value = false;
     }
     pageIndex.value = value;
   }

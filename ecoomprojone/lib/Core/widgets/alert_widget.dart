@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-Future<dynamic> atertWidget(
+Future<dynamic> alertWidget(
     {required String item, required Function okFunction}) {
   return Get.defaultDialog(
       title: "Delete Alert",

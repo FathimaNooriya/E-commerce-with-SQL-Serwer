@@ -18,5 +18,6 @@ class OrderDetailModel {
         "pdt_id": productId,
         "pdt_qty": productQty,
         "pdt_total": productTotal,
+        "order_id": orderId,
       };
 }

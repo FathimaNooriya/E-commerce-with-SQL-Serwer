@@ -18,5 +18,6 @@ class OrderHeaderModel {
         "order_date": orderDate,
         "cust_id": custId,
         "order_net_total": orderTotal,
+        "order_id": orderId,
       };
 }

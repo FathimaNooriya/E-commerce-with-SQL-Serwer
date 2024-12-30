@@ -130,7 +130,7 @@ class CustomerManagementIcons extends StatelessWidget {
     CustomerModel customer,
   ) async {
     // Show confirmation alert
-    atertWidget(
+    alertWidget(
       item: customer.custName,
       okFunction: () async {
         try {
